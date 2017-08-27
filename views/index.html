@@ -83,14 +83,14 @@
 
 let timeNow = document.getElementById("timeNow");
 
-let btc_coin = document.getElementById("btc");
-let eth = document.getElementById("eth");
-let bch = document.getElementById("bch");
+var btc = document.getElementById("btc");
+var eth = document.getElementById("eth");
+var bch = document.getElementById("bch");
 
 function getCoins(){
   $.get( "https://api.coinmarketcap.com/v1/ticker/?convert=BRL&limit=3", function( data ) {
     timeNow.innerHTML = new Date().timeNow();
-    btc_coin.innerHTML = replaceComma(numeral(data[0].price_brl).format("0,0.00"));
+    btc.innerHTML = replaceComma(numeral(data[0].price_brl).format("0,0.00"));
     eth.innerHTML = replaceComma(numeral(data[1].price_brl).format("0,0.00"));
     bch.innerHTML = replaceComma(numeral(data[2].price_brl).format("0,0.00"));
     setTimeout(getCoins, 8000);
