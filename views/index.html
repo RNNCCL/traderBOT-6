@@ -107,8 +107,8 @@ Date.prototype.timeNow = function () {
 }
 
 getCoins();
-let bar = document.getElementById("bar");
-let usage = document.getElementById("usage");
+var bar = document.getElementById("bar");
+var usage = document.getElementById("usage");
 
 new Chart(usage, {
     type: 'doughnut',
@@ -155,7 +155,5 @@ new Chart(bar, {
 
   }
 });
-
-
 </script>
 {% endblock %}
