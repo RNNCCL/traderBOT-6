@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="app-container container">
+  <div class="row">
+    <div class="col s12">
+      <span class="page-title">Dashboard</span>
+      <br>
+      <div class="page-description">
+        <span>
+          Este é o painel principal.
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="row app-content">
+    <div class="col s12 m8">
+      <div class="app-box">
+        <div class="row">
+          <div class="col s12 m6">
+            <span class="box-title">Gráficos</span>
+            <br>
+            <div class="page-description">
+              <span>Selecione o período do gráfico.</span>
+            </div>
+          </div>
+          <div class="col s12 m6 input-field clean-input">
+            <select>
+              <option value="1" selected>Hoje</option>
+              <option value="2">7 Dias</option>
+              <option value="3">Mês</option>
+              <option value="4">Ano</option>
+              <option value="5">Tudo</option>
+            </select>
+          </div>
+        </div>
+        <canvas id="bar" height="200"></canvas>
+      </div>
+    </div>
+    <div class="col s12 m4">
+      <div class="row">
+        <div class="app-box">
+          <span class="box-title">Tempo Real</span>
+          <br>
+          <div class="page-description">
+            <span>Atualizado às <span id="timeNow">00:00:00</span></span>
+          </div>
+            <table class="striped center-text">
+              <thead>
+                <tr>
+                    <th>Moeda</th>
+                    <th>Preço</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>BTC</td>
+                  <td>R$ <span id="btc">?</span></td>
+                </tr>
+                <tr>
+                  <td>ETH</td>
+                  <td>R$ <span id="eth">?</span></td>
+                </tr>
+                <tr>
+                  <td>BCH</td>
+                  <td>R$ <span id="bch">?</span></td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="app-box">
+          <canvas id="usage"></canvas>
+        </div>
+      </div>
+    </div>
+   </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js" charset="utf-8"></script>
+<script>
+
+let timeNow = document.getElementById("timeNow");
+
+let btc = document.getElementById("btc");
+let eth = document.getElementById("eth");
+let bch = document.getElementById("bch");
+
+function getCoins(){
+  $.get( "https://api.coinmarketcap.com/v1/ticker/?convert=BRL&limit=3", function( data ) {
+    timeNow.innerHTML = new Date().timeNow();
+    btc.innerHTML = replaceComma(numeral(data[0].price_brl).format("0,0.00"));
+    eth.innerHTML = replaceComma(numeral(data[1].price_brl).format("0,0.00"));
+    bch.innerHTML = replaceComma(numeral(data[2].price_brl).format("0,0.00"));
+    setTimeout(getCoins, 8000);
+  });
+}
+function replaceComma(str) {
+  return str.replace(/[,.]/g, function (m) {return m === ',' ? '.' : ','});
+}
+
+Date.prototype.timeNow = function () {
+     return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+
+            ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+
+            ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
+}
+
+getCoins();
+let bar = document.getElementById("bar");
+let usage = document.getElementById("usage");
+
+new Chart(usage, {
+    type: 'doughnut',
+    data: {
+      labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+      datasets: [
+        {
+          label: "Population (millions)",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+          data: [2478,5267,734,784,433]
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Predicted world population (millions) in 2050'
+      }
+    }
+});
+new Chart(bar, {
+  type: 'line',
+  data: {
+    labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
+    datasets: [{
+        data: [86,114,106,106,107,111,133,221,783,2478],
+        label: "Bitcoin",
+        borderColor: "#3e95cd",
+        fill: false
+      }, {
+        data: [282,350,411,502,635,809,947,1402,3700,5267],
+        label: "Ethereum",
+        borderColor: "#8e5ea2",
+        fill: false
+      }, {
+        data: [168,170,178,190,203,276,408,547,675,734],
+        label: "Bitcoin Cash",
+        borderColor: "#3cba9f",
+        fill: false
+      }
+    ]
+  },
+  options: {
+
+  }
+});
+
+
+</script>
+{% endblock %}

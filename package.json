@@ -1,0 +1,30 @@
+{
+  "name": "traderBOT",
+  "version": "1.0.0",
+  "description": "fon",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon --watch views -e html,css *.js",
+    "build-css": "node-sass --include-path scss scss/main.scss public/css/base.css",
+    "css": "nodemon -e scss -x \"npm run build-css\""
+  },
+  "author": "danfragoso",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "connect-flash": "*",
+    "cookie-parser": "^1.4.1",
+    "express": "*",
+    "express-messages": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "mongodb": "*",
+    "mongoose": "*",
+    "nunjucks": "^3.0.0",
+    "passport": "*",
+    "passport-http": "*",
+    "passport-local": "*"
+  }
+}

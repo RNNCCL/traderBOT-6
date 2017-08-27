@@ -1,0 +1,39 @@
+{% extends "public-base.html" %}
+{% block body %}
+<span class="page-title">Login</span>
+<br>
+<div class="page-description">
+  <span>
+    Faça login para acessar sua conta.
+  </span>
+</div>
+{% if errors %}
+  {% for error in errors %}
+    <div class="error-msg">
+      {{error.msg}}
+    </div>
+  {% endfor %}
+{% endif %}
+<form action="/users/login" method="post" id="reg">
+  <div class="row">
+    <div class="input-field col s12">
+      <input name="username" type="text" class="validate">
+      <label for="username">Nome de Usuário</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-field col s12">
+      <input name="password" id="password" type="password" class="validate">
+      <label for="password">Senha</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s8 redir-link">
+      <a href="/users/register">Ainda não tenho uma conta.</a>
+    </div>
+    <div class="col s4">
+      <a class="waves-effect waves-light btn right" onclick="document.getElementById('reg').submit()">Login</a>
+    </div>
+  </div>
+</form>
+{% endblock %}
